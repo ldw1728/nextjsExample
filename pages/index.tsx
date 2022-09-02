@@ -1,11 +1,14 @@
 import type { NextPage } from 'next'
-import Image from 'next/image'
 
 
 const Home: NextPage = () => {
   
   return (
-    <div>this is home</div>
+    <>
+    <div className='text-3xl font-bold underline'>
+      this is home
+    </div>
+    </>
   );
 }
 

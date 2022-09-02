@@ -3,20 +3,24 @@ import { getAllPosts } from '../../lib/post';
 
 export default function Posts({posts}: any){
     
-    return <div>
-        {posts.map((post: any) => {
-            const {slug, frontmatter} = post;
-            const {title, author, category, date, bannerImage, tags} = frontmatter;
-             
-            return <article key={title}>
-                        <Link href = {`/posts/${slug}`}>
-                            <h1>{title}</h1>
-                        </Link>
-                        <h3>{author}</h3>
-                        <h3>{date}</h3>
-                    </article>
-        })}
+    return <>
+        <div className='grid gap-10 grid-cols-3 grid-rows-3 '>
+            {
+                posts.map((post: any) => {
+                    const {slug, frontmatter} = post;
+                    const {title, author, category, date, bannerImage, tags} = frontmatter;
+                    
+                    return <Link href = {`/posts/${slug}`}>
+                                <div className='post rounded-3xl drop-shadow-md border-2 border-slate-300 hover:border-slate-400'>                               
+                                    <a>{title}</a>  
+                                    <div >{author}</div>
+                                    <div >{date}</div>                                                
+                                </div>
+                            </Link>
+                })
+            }
         </div>
+        </>
     
 }   
 
