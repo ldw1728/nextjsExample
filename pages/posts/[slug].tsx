@@ -1,21 +1,22 @@
 import { getAllPostsPaths, getPost } from '../../lib/post';
 import ReactMarkdown from 'react-markdown'
 import mdIt from 'markdown-it';
+import dateFormat from 'date-and-time'
 
 export default function Posts({frontmatter, content} : any){
     const {title, author, date} = frontmatter;
     const md = new mdIt();
-    const mdContent :String = md.render(content);
+    const mdContent :string = md.render(content);
     return (<>
-        <article className="prose lg:prose-xl prose-slate"> 
-            <div>
-            <p>{title}</p>
-            <p>{author}</p>
-            <p>{date}</p>
-            </div>
-            <p  />           
-        </article>
-        </>
+            <article className="prose lg:prose-xl prose-slate"> 
+                <div className='post_Info py-10'>
+                <div className='antialiased text-3xl py-5'>{title}</div>
+                <div className='date antialiased italic font-thin text-sm float-right'>{dateFormat.format(new Date(date), 'YYYY/MM/DD HH:mm')}</div>
+                </div>  
+                <div className='antialiased' dangerouslySetInnerHTML={{__html:mdContent}}/>
+                        
+            </article>
+            </>
     )
     
 }

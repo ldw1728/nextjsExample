@@ -8,7 +8,7 @@ import Link from 'next/link';
 const user = {
   name: 'lee dongwook',
   email: 'zckxw@naver.com',
-  imageUrl:''
+  imageUrl:'/image/userImg.jpg'
 }
 const navigation = [
   { name: 'home', href: '/', current: false },
@@ -49,9 +49,9 @@ export default function Example() {
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => (
+                          <Link href={item.href}>
                           <a
                             key={item.name}
-                            href={item.href}
                             className={classNames(
                               item.current
                                 ? 'bg-gray-900 text-white'
@@ -62,6 +62,7 @@ export default function Example() {
                           >
                             {item.name}
                           </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -133,8 +134,7 @@ export default function Example() {
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
-                      as="a"
-                      href={item.href}
+                      as="a"                     
                       className={classNames(
                         item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                         'block px-3 py-2 rounded-md text-base font-medium'
@@ -179,12 +179,6 @@ export default function Example() {
             </>
           )}
         </Disclosure>
-
-        <header className="bg-white shadow">
-          <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-          </div>
-        </header>
       </div>
     </>
   )

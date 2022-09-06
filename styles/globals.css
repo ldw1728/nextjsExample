@@ -2,14 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-.Home{
-  
+html, body{
+  height: 100%;
+  width: 100%;
 }
 
+main{
+  min-height: 84%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
+}
 
+#__next{
+  height:100%
+}
 
+.Home_container__bCOhY{
+  height:100%
+}
 
+.min-h-full{
+  min-height:fit-content
+}
 /*
 post 
 */
@@ -17,6 +32,7 @@ post
   padding: 30px;
   background-color: rgb(226 232 240);
   cursor: pointer;
+  height: fit-content;
 }
 
 .post > div{
@@ -26,4 +42,31 @@ post
 
 .post > a{
   font-weight: 600;
+}
+
+.prose{
+  min-width: 50%;
+}
+
+.date{
+  font-weight: 100;
+  font-style: italic;
+  font-size: 0.875rem; 
+  line-height: 1.25rem; 
+}
+
+.postgrid{
+  min-width: 50%;
+}
+
+.giticon{
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+  
+}
+
+.category{
+ 
+  
 }
