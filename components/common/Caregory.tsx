@@ -1,31 +1,51 @@
+import Link from "next/link";
+import { useState } from "react";
 
 
+interface CategoryInfo {
+    mcate : String,
+    scate : String[]
+}
 
-export default function Category(){
-    const s_cate = ['javascript', 'nextJS'];
+type CategoryProps = {
+    categoryList : Array<CategoryInfo>
+}
+
+export default function Category(categoryProps:CategoryProps){
+
+    const [cateItem, setCateItem] = useState([]);
+
+    const categoryList = categoryProps.categoryList;
+
+    
     return (
         <>
-        <div className="category">
-            <ul className="m_cate">
-                <li>
-                    <div className="m_cate">dev</div>
-                    <ul className="s_cate">
-                        {
-                            s_cate.map((scate)=>{
-                                return (
-                                    <li>
-                                        {scate}
-                                    </li>
-                                );
-                            })
-                        }
-                    </ul>
-                </li>
-                <li>infomation</li>
-                <li>tip</li>
-                <li>etc</li>
-            </ul>
-        </div>
+        <div className="category text-slate-300">
+            {
+                categoryList.map((categoryInfo:CategoryInfo)=>{
+                    return (
+                        <ul className="m_cate antialiased">
+                            <li>
+                            <div className="m_cate_title font-semibold">- {categoryInfo.mcate}</div>
+                                <ul className="s_cate pl-5">
+                                    {
+                                        categoryInfo.scate.map((scate)=>{
+                                            return (
+                                                <li>
+                                                    <Link href='/posts?params=123'>
+                                                    <div className="s_cate_title font-extralight">{scate}</div>
+                                                    </Link>
+                                                </li>
+                                            );
+                                        })
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    )
+                })
+            }
+            </div>
         </>
     )
 }

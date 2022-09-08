@@ -1,10 +1,15 @@
 import Link from 'next/link'
-import { getAllPosts } from '../../lib/post';
+import { getAllPosts, getCategoryList, getAllCategoryPaths } from '../../lib/post';
 import dateFormat from 'date-and-time'
+import Category from '../../components/common/Caregory'
+import {useRouter}  from 'next/router'
 
-export default function Posts({posts}: any){
+export default function Posts({posts, categoryList}: any){
+    const router = useRouter()
+    console.log(router.query)
     //const dateFns.format(date, 'yyyy-MM-dd')
     return <>
+        <Category categoryList={categoryList}/>
         <div className='grid postgrid gap-10 grid-cols-3 grid-rows-3 '>
             {
                 posts.map((post: any) => {
@@ -25,12 +30,23 @@ export default function Posts({posts}: any){
     
 }   
 
-export async function getStaticProps(){
+
+export async function getStaticPaths(){
+    const paths = await getAllCategoryPaths();
+    
+    return {
+        paths,
+        fallback: false,
+      };
+}
+
+export async function getStaticProps({params:{tag}}: any){
     const posts:Array<any> = await getAllPosts();
     //const posts = await getAllPosts().then((res)=>{ return res.contents});
+    const categoryList = await getCategoryList();
     return {
         props : {
-            posts:JSON.parse(JSON.stringify(posts))
+            posts:JSON.parse(JSON.stringify(posts)), categoryList:categoryList
         }
     }
 }

@@ -1,13 +1,18 @@
-import { getAllPostsPaths, getPost } from '../../lib/post';
+import { getAllPostsPaths, getPost, getCategoryList } from '../../../lib/post';
 import ReactMarkdown from 'react-markdown'
-import mdIt from 'markdown-it';
+import mdIt from 'markdown-it'; 
 import dateFormat from 'date-and-time'
+import {useRouter}  from 'next/router'
+import Category from '../../../components/common/Caregory'
 
-export default function Posts({frontmatter, content} : any){
+export default function Posts({frontmatter, content, categoryList} : any){
+    const router = useRouter()
+    console.log(router.query);
     const {title, author, date} = frontmatter;
     const md = new mdIt();
     const mdContent :string = md.render(content);
     return (<>
+            <Category categoryList = {categoryList}/>
             <article className="prose lg:prose-xl prose-slate"> 
                 <div className='post_Info py-10'>
                 <div className='antialiased text-3xl py-5'>{title}</div>
@@ -39,7 +44,8 @@ export async function getStaticPaths(){
 export async function getStaticProps({params:{slug}}: any){
     const res = await getPost(slug);
     const resJson = JSON.parse(JSON.stringify(res));
+    const categoryList = getCategoryList();
     return {
-        props: resJson
+        props: {frontmatter:resJson.frontmatter, content:resJson.content, categoryList:categoryList}
     }
 }

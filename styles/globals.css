@@ -33,6 +33,7 @@ post
   background-color: rgb(226 232 240);
   cursor: pointer;
   height: fit-content;
+ 
 }
 
 .post > div{
@@ -46,6 +47,7 @@ post
 
 .prose{
   min-width: 50%;
+  margin-right: 10%;
 }
 
 .date{
@@ -57,6 +59,8 @@ post
 
 .postgrid{
   min-width: 50%;
+  margin-top: 5%;
+  margin-right: 10%;
 }
 
 .giticon{
@@ -67,6 +71,18 @@ post
 }
 
 .category{
- 
-  
+  padding-right: 10%;
+  margin-top: 3%;
 }
+
+.m_cate div{
+  padding-top: 10px;
+}
+
+.m_cate div:hover {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: rgb(71 85 105);
+  cursor: pointer;
+}
+

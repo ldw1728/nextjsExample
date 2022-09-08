@@ -1,13 +1,47 @@
 import fs from 'fs';
 import matter from 'gray-matter'; //마크다운파일의 메타데이터를 파싱하기위한 라이브러리.
 
+
+type type_frontmatter = {
+  title: String,
+  author: String,
+  description: String,
+  date: Date,
+  category: String,
+  tag: String
+}
+
+type CategoryInfo = {
+  mcate : String,
+  scate : String[]
+}
+
+
+var categoryList: Array<CategoryInfo> = [];
+
+
+
 /*
 fs로 파일에 접근하여 데이터 리턴.
 */
 export async function getAllPostsPaths(){
     const files = fs.readdirSync('postContents');
-    const paths = files.map((fileName)=>({params:{slug:fileName.replace('.md', '')}}));
+    const paths = files.map((fileName)=>{
+      return {params:{tag:'dev', slug:fileName.replace('.md', '')}}
+    });
+    
     return paths;
+}
+
+export async function getAllCategoryPaths(){
+  //const paths = [{params:{tag:['dev']}}, {params:{tag:[]}}];
+  categoryList = await getCategoryList();
+  const paths = categoryList.map((e)=>{
+      return {params:{tag:[e.mcate]}}
+  });console.log(paths)
+  paths.push({params:{tag:[]}});
+  
+  return paths;
 }
 
 export async function getPost(slug:String){
@@ -19,13 +53,39 @@ export async function getPost(slug:String){
 export async function getAllPosts(){
     const files = fs.readdirSync('postContents'); 
 
-      const posts = files.map((fileName : String)=>{
+      const posts:any[] = files.map((fileName : String)=>{
         const slug = fileName.replace('.md', '');
         const readFile = fs.readFileSync(`postContents/${fileName}`);
         const {data : frontmatter} = matter(readFile);
-
         return {slug, frontmatter};
       });
-
+      //categoryList = createCategory(posts); //카테고리 세팅.
       return posts;
+}
+
+function createCategory(posts:any[]){
+      let tmp:Array<CategoryInfo> = [];
+
+      posts.forEach(e=>{
+        const {category, tag} = e.frontmatter; 
+        let res:number = tmp.findIndex((e)=>e.mcate === category);
+        if(res>-1){
+          tmp.at(res)?.scate.push(tag);
+        }
+        else tmp.push({mcate:category, scate:[tag]});
+      })
+      return tmp;
+
+
+}
+
+export async function getCategoryList(){
+  if(categoryList.length <= 0){
+    console.log('return categoryList empty');
+    const posts = await getAllPosts();
+    categoryList = createCategory(posts);
+  }
+  
+
+    return categoryList;
 }

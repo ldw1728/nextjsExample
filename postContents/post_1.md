@@ -3,6 +3,8 @@ title: First p
 author: wooklee
 description: The first post is the most memorable one.
 date: 2020-04-16
+category: dev
+tag : javascript
 ---
 
 # h1 Heading 8-)
