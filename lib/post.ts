@@ -16,10 +16,9 @@ type CategoryInfo = {
   scate : String[]
 }
 
+let categoryList: Array<CategoryInfo> = [];
 
-var categoryList: Array<CategoryInfo> = [];
-
-
+getAllPosts().then((posts)=>{categoryList = createCategory(posts)});
 
 /*
 fs로 파일에 접근하여 데이터 리턴.
@@ -34,12 +33,19 @@ export async function getAllPostsPaths(){
 }
 
 export async function getAllCategoryPaths(){
-  //const paths = [{params:{tag:['dev']}}, {params:{tag:[]}}];
+
   categoryList = await getCategoryList();
-  const paths = categoryList.map((e)=>{
-      return {params:{tag:[e.mcate]}}
-  });console.log(paths)
-  paths.push({params:{tag:[]}});
+
+    let paths:any[] = [
+      {params:{tag:[]}}
+    ];
+
+    categoryList.forEach((categoryInfo)=>{
+      paths.push({params:{tag:[categoryInfo.mcate]}});
+      categoryInfo.scate.forEach((scateStr:String)=>{
+        paths.push({params:{tag: [categoryInfo.mcate, scateStr]}});
+      });
+    })
   
   return paths;
 }
@@ -85,7 +91,6 @@ export async function getCategoryList(){
     const posts = await getAllPosts();
     categoryList = createCategory(posts);
   }
-  
 
     return categoryList;
 }
