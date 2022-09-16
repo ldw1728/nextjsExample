@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { getAllPosts, getCategoryList, getAllCategoryPaths } from '../../lib/post';
+import { getAllPosts, getCategoryList, getAllCategoryPaths, getPost } from '../../lib/post';
 import dateFormat from 'date-and-time'
 import Category from '../../components/common/Caregory'
 import {useRouter}  from 'next/router'
-
+import PostList from '../../components/post/PostList'
+import PostDetail from '../../components/post/PostDetail'
 
 type PostsProps ={
     posts: Array<any>,
@@ -13,31 +14,32 @@ type PostsProps ={
 
 export default function Posts(postProps: PostsProps){ 
     const router = useRouter()
-    console.log(router.query)
-    //const dateFns.format(date, 'yyyy-MM-dd')
-    return <>
-        <Category categoryList={postProps.categoryList}/>
-        <div className='grid postgrid gap-10 grid-cols-3 grid-rows-3 '>
-            {
-                postProps.posts.map((post: any) => {
-                    const {slug, frontmatter} = post;
-                    const {title, author, category, date, bannerImage, tags} = frontmatter;
-
-                    return <Link href = {`/posts/${slug}`}>
-                                <div className='post rounded-3xl drop-shadow-md border-2 border-slate-300 hover:border-slate-400'>                               
-                                    <a>{title}</a>  
-                                    <div >{author}</div>
-                                    <div className='date'>{dateFormat.format(new Date(date), 'YYYY/MM/DD')}</div>                                                
-                                </div>
-                            </Link>
-                })
-            }
-        </div>
-        </>
+    const queryArr:any = router.query.tag;
     
+    /*
+    요청받은 경로에 따라 post상세/post리스트 화면을 구분하여 보여줌.
+    [ex] http://url/post/{category}/{tag}/{postFileName}}
+    쿼리스트링 순서에 맞게 array 형식으로 최대 3개까지 들어온다.
+    queryArr의 length가 3일 경우 post상세페이지를 보여줌. 3보다 작을 시 post리스트
+    */
+
+    return <>
+            <Category categoryList={postProps.categoryList}/>
+            {
+                (queryArr && queryArr.length > 2) ? //쿼리스트링이 존재하고 길이가 2이상.
+                               <PostDetail props={postProps.postDetail}/>:<PostList posts={postProps.posts}/>
+            }
+            </>
 }   
-
-
+  /*
+          {params:{tag: [dev, javascript]}}
+          요런 형식으로 path를 구성하여 nextjs getStaticPaths에 넘겨주어 경로를 미리 세팅하면
+          추후에 쿼리스트링으로 받아오는 tag: [dev, javascript] 와 매칭하여 getStaticProps로 넘겨줌
+          getStaticProps에서 tag: [dev, javascript] 경로에 대한 실질적인 데이터처리
+          
+        */
+// 해당 메소드는 동적라우팅을 이용할 때 꼭 정의 해야함. 정적으로 경로를 미리 세팅하여 매핑하기 위해.
+//paths에는 세팅된 경로가 저장되어있어 return하여 넘겨줌
 export async function getStaticPaths(){
     const paths = await getAllCategoryPaths();
     paths.map((e)=>{
@@ -51,14 +53,26 @@ export async function getStaticPaths(){
 }
 
 export async function getStaticProps({params:{tag}}: any){
-    console.log('getStaticProps tags is : ' + tag );
-    const posts:Array<any> = await getAllPosts();
-    //const posts = await getAllPosts().then((res)=>{ return res.contents});
-    const categoryList = await getCategoryList();
-    return {
-        props : {
-            posts:JSON.parse(JSON.stringify(posts)), categoryList:categoryList 
-        }
+
+    let postsProps:PostsProps = {
+        posts: [],
+        categoryList: [],
+        postDetail: null
+    };
+    
+    // post상세
+    if(tag && tag.length > 2){
+        postsProps.postDetail = JSON.parse(JSON.stringify(await getPost(tag[2])));       
+    }
+    else {// post list
+        let posts_tmp = await getAllPosts(tag);
+        postsProps.posts = JSON.parse(JSON.stringify(posts_tmp));
+    }
+    
+    postsProps.categoryList = await getCategoryList();
+
+    return { 
+        props : postsProps
     }
 }
 

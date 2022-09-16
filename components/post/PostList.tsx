@@ -2,7 +2,7 @@ import Link from "next/link";
 import dateFormat from 'date-and-time';
 
 //postListComponent
-export default function postList(posts:Array<any>){
+export default function postList({posts}:any){
 
     return (
         <>
@@ -10,9 +10,9 @@ export default function postList(posts:Array<any>){
             {
                 posts.map((post: any) => {
                     const {slug, frontmatter} = post;
-                    const {title, author, category, date, bannerImage, tags} = frontmatter;
+                    const {title, author, category, date, bannerImage, tag} = frontmatter;
 
-                    return <Link href = {`/posts/${slug}`}>
+                    return <Link href = {`/posts/${category}/${tag}/${slug}`}>
                                 <div className='post rounded-3xl drop-shadow-md border-2 border-slate-300 hover:border-slate-400'>                               
                                     <a>{title}</a>  
                                     <div >{author}</div>

@@ -23,16 +23,20 @@ export default function Category(categoryProps:CategoryProps){
         <div className="category text-slate-300">
             {
                 categoryList.map((categoryInfo:CategoryInfo)=>{
+                    let mcateHref = `/posts/${categoryInfo.mcate}`; // 중카테고리 url
                     return (
                         <ul className="m_cate antialiased">
                             <li>
-                            <div className="m_cate_title font-semibold">- {categoryInfo.mcate}</div>
+                            <Link href={mcateHref}>
+                            <div className="m_cate_title font-semibold">- {categoryInfo.mcate}</div> 
+                            </Link>
                                 <ul className="s_cate pl-5">
                                     {
                                         categoryInfo.scate.map((scate)=>{
+                                            let scateHref = `${mcateHref}/${scate}`; // 소카테고리 url
                                             return (
                                                 <li>
-                                                    <Link href='/posts?params=123'>
+                                                    <Link href={scateHref}>
                                                     <div className="s_cate_title font-extralight">{scate}</div>
                                                     </Link>
                                                 </li>

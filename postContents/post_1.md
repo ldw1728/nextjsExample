@@ -4,7 +4,7 @@ author: wooklee
 description: The first post is the most memorable one.
 date: 2020-04-16
 category: dev
-tag : javascript
+tag : nextJS
 ---
 
 # h1 Heading 8-)
