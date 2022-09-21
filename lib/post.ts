@@ -1,5 +1,6 @@
 import fs from 'fs';
 import matter from 'gray-matter'; //마크다운파일의 메타데이터를 파싱하기위한 라이브러리.
+import {Pagination} from './Pagination'
 
 
 type type_frontmatter = {
@@ -16,8 +17,10 @@ type CategoryInfo = {
   scate : String[]
 }
 
+
 var categoryList: Array<CategoryInfo> = [];
 var posts_init:Array<any> = [];
+
 
 // js파일로드시 실행. 모든 post들을 조회하여 카테고리 생성. ()
 getAllPosts().then((posts)=>{categoryList = createCategory(posts);posts_init=posts});
@@ -45,7 +48,7 @@ export async function getAllCategoryPaths(){
     ];
 
         categoryList.forEach((categoryInfo)=>{
-        paths.push({params:{tag:[categoryInfo.mcate]}});
+        //paths.push({params:{tag:[categoryInfo.mcate]}});
         categoryInfo.scate.forEach((scateStr:String)=>{
           paths.push({params:{tag: [categoryInfo.mcate, scateStr]}}); 
           //정적경로를 세팅할 때 params안에 tag는 동적라우팅파일 이름과 동일한 변수명을 사용한다.
@@ -55,9 +58,10 @@ export async function getAllCategoryPaths(){
         });
       })
 
-      // 실제 post파일 경로도 추가해준다.
-      posts_init.forEach(post=>{
+      // // 실제 post파일 경로도 추가해준다.
+      posts_init.forEach((post, idx)=>{
         let fm = post.frontmatter;
+        //paths.push({params:{tag:[String(Math.floor(idx/6) + 1)]}});
         paths.push({params:{tag:[fm.category, fm.tag, post.slug]}});
       });
     
@@ -84,7 +88,7 @@ export async function getAllPosts(tag:Array<String> = []){ //매개변수 기본
       });
 
       // 쿼리스트링으로 받아온 경로에 맞게 카테고리 별로 구분하여 보여주기위한 로직.
-      if(tag.length > 0){ //쿼리스트링이 존재할 경우
+      if(tag.length > 1){ //쿼리스트링이 존재할 경우
         posts = posts.filter(e=>{ 
           if(e.frontmatter.category == tag[0]){ //같은 카테고리
               if(tag[1]){ // 쿼리스트링에 tag가 존재하면

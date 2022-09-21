@@ -9,13 +9,14 @@ import PostDetail from '../../components/post/PostDetail'
 type PostsProps ={
     posts: Array<any>,
     categoryList: Array<any>,
-    postDetail: any
+    postDetail: any,
+    pageIdx: Number
 }
 
 export default function Posts(postProps: PostsProps){ 
     const router = useRouter()
     const queryArr:any = router.query.tag;
-    
+
     /*
     요청받은 경로에 따라 post상세/post리스트 화면을 구분하여 보여줌.
     [ex] http://url/post/{category}/{tag}/{postFileName}}
@@ -26,8 +27,8 @@ export default function Posts(postProps: PostsProps){
     return <>
             <Category categoryList={postProps.categoryList}/>
             {
-                (queryArr && queryArr.length > 2) ? //쿼리스트링이 존재하고 길이가 2이상.
-                               <PostDetail props={postProps.postDetail}/>:<PostList posts={postProps.posts}/>
+                (queryArr && queryArr.length > 3) ? //쿼리스트링이 존재하고 길이가 2이상.
+                               <PostDetail props={postProps.postDetail}/>:<PostList posts={postProps.posts} pageIdx={postProps.pageIdx}/>
             }
             </>
 }   
@@ -40,6 +41,7 @@ export default function Posts(postProps: PostsProps){
         */
 // 해당 메소드는 동적라우팅을 이용할 때 꼭 정의 해야함. 정적으로 경로를 미리 세팅하여 매핑하기 위해.
 //paths에는 세팅된 경로가 저장되어있어 return하여 넘겨줌
+//build 시 한번 실행되며 dev에서는 계속 실행된다.
 export async function getStaticPaths(){
     const paths = await getAllCategoryPaths();
     paths.map((e)=>{
@@ -48,27 +50,41 @@ export async function getStaticPaths(){
 
     return {
         paths,
-        fallback: false,
+        fallback: 'blocking',
       };
+      /*
+        fallback:false -> 설정된 경로가 아닐 시 404페이지.
+        fallback:true -> 설정된 경로가 아니어도 페이지 render
+        fallback:''blocking -> 설정된 경로가 아니면 blocking 하여 getStaticProps wait 후 페이지 render
+      */
 }
 
 export async function getStaticProps({params:{tag}}: any){
-
+    console.log(tag)
     let postsProps:PostsProps = {
         posts: [],
         categoryList: [],
-        postDetail: null
+        postDetail: null,
+        pageIdx: 1
     };
     
     // post상세
-    if(tag && tag.length > 2){
-        postsProps.postDetail = JSON.parse(JSON.stringify(await getPost(tag[2])));       
+    if(tag && tag.length > 3){
+        postsProps.postDetail = JSON.parse(JSON.stringify(await getPost(tag[3])));       
     }
     else {// post list
         let posts_tmp = await getAllPosts(tag);
         postsProps.posts = JSON.parse(JSON.stringify(posts_tmp));
+        if(tag){
+            if(tag.length == 1){
+                postsProps.pageIdx = tag[0];
+            }
+            else if(tag.length === 3){
+                postsProps.pageIdx = tag[2];
+            }
+            
+        }
     }
-    
     postsProps.categoryList = await getCategoryList();
 
     return { 

@@ -27,9 +27,9 @@ export default function Category(categoryProps:CategoryProps){
                     return (
                         <ul className="m_cate antialiased">
                             <li>
-                            <Link href={mcateHref}>
+                            <a>
                             <div className="m_cate_title font-semibold">- {categoryInfo.mcate}</div> 
-                            </Link>
+                            </a>
                                 <ul className="s_cate pl-5">
                                     {
                                         categoryInfo.scate.map((scate)=>{
