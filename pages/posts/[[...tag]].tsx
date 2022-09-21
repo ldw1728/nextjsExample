@@ -69,17 +69,17 @@ export async function getStaticProps({params:{tag}}: any){
     };
     
     // post상세
-    if(tag && tag.length > 3){
+    if(tag && tag.length > 3){ //[ex] http://url/post/{category}/{tag}/post/{postFileName}}
         postsProps.postDetail = JSON.parse(JSON.stringify(await getPost(tag[3])));       
     }
     else {// post list
         let posts_tmp = await getAllPosts(tag);
         postsProps.posts = JSON.parse(JSON.stringify(posts_tmp));
         if(tag){
-            if(tag.length == 1){
+            if(tag.length == 1){    //[ex] http://url/post/{idx}
                 postsProps.pageIdx = tag[0];
             }
-            else if(tag.length === 3){
+            else if(tag.length === 3){  //[ex] http://url/post/{category}/{tag}/{idx}
                 postsProps.pageIdx = tag[2];
             }
             
