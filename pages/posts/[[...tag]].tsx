@@ -62,7 +62,7 @@ export async function getStaticPaths(){
 export async function getStaticProps({params:{tag}}: any){
    
     let postsProps:PostsProps = {
-        posts: [],
+        posts: [], 
         categoryList: [],
         postDetail: null,
         pageIdx: 1
