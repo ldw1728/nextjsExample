@@ -19,16 +19,16 @@ export default function Posts(postProps: PostsProps){
 
     /*
     요청받은 경로에 따라 post상세/post리스트 화면을 구분하여 보여줌.
-    [ex] http://url/post/{category}/{tag}/{postFileName}}
-    쿼리스트링 순서에 맞게 array 형식으로 최대 3개까지 들어온다.
-    queryArr의 length가 3일 경우 post상세페이지를 보여줌. 3보다 작을 시 post리스트
+    [ex] http://url/post/{category}/{tag}/post/{postFileName}}
+    쿼리스트링 순서에 맞게 array 형식으로 최대 4개까지 들어온다.
+    queryArr의 length가 4일 경우 post상세페이지를 보여줌. 4보다 작을 시 post리스트
     */
 
     return <>
             <Category categoryList={postProps.categoryList}/>
             {
-                (queryArr && queryArr.length > 3) ? //쿼리스트링이 존재하고 길이가 2이상.
-                               <PostDetail props={postProps.postDetail}/>:<PostList posts={postProps.posts} pageIdx={postProps.pageIdx}/>
+                (queryArr && queryArr.length > 3) ? //쿼리스트링이 존재하고 길이가 3이상.
+                               <PostDetail props={postProps.postDetail}/>:<PostList posts={postProps.posts} pageIdx={postProps.pageIdx} queryArr={queryArr}/>
             }
             </>
 }   
@@ -60,7 +60,7 @@ export async function getStaticPaths(){
 }
 
 export async function getStaticProps({params:{tag}}: any){
-    console.log(tag)
+   
     let postsProps:PostsProps = {
         posts: [],
         categoryList: [],

@@ -33,7 +33,12 @@ post
   background-color: rgb(226 232 240);
   cursor: pointer;
   height: fit-content;
- 
+  transition-duration: 200ms;
+}
+
+.post:hover{
+  filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+  transform: scale(1.03);
 }
 
 .post > div{
@@ -97,3 +102,38 @@ post
   margin: auto;
   margin-bottom: 20px;
 }
+
+.pagination{
+  text-align: center;
+}
+
+.pagebtn{
+  display: inline-block;
+  font-weight:400;
+  width:35px;
+  margin:3px;
+  padding :3px;
+  border-width: 1.7px;
+  border-color: rgb(203 213 225);
+  border-radius: 20%;
+  transition-duration: 200ms;
+}
+
+.currpagebtn{
+  margin-left: 5px;
+  margin-right: 5px;
+  font-weight: 800;
+  border-color: rgb(100 116 139);
+  transform: scale(1.1);
+}
+
+.pagebtn:hover{
+  cursor: pointer;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-weight: 800;
+  border-color: rgb(100 116 139);
+  transform: scale(1.1);
+}
+
+

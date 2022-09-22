@@ -28,7 +28,7 @@ export default function Category(categoryProps:CategoryProps){
                         <ul className="m_cate antialiased">
                             <li>
                             <a>
-                            <div className="m_cate_title font-semibold">- {categoryInfo.mcate}</div> 
+                            <div className="m_cate_title font-semibold"> {categoryInfo.mcate}</div> 
                             </a>
                                 <ul className="s_cate pl-5">
                                     {
