@@ -3,7 +3,9 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link';
-import {useSession} from "next-auth/react"
+import {useSession, signIn, signOut} from "next-auth/react"
+import LoginPopup from '../auth/LoginPopup';
+import {useState} from "react"
 
 
 const navigation = [
@@ -37,7 +39,7 @@ function getSessionCheck(){
     ]
   }
   else{
-    userNavigation = [{ name: 'Sign in', href: '#' }];
+    userNavigation = [{ name: 'Sign in', href: `` }];
   }
 
   return {userNavigation, user};
@@ -45,6 +47,7 @@ function getSessionCheck(){
 
 export default function Example() {
   
+  const [isLoginPopup, setIsLoginPopup] = useState(false);
 
   const {userNavigation, user} = getSessionCheck();
 
@@ -59,6 +62,7 @@ export default function Example() {
         ```
       */}
       <div className="min-h-full">
+        <LoginPopup show={isLoginPopup}/>
         <Disclosure as="nav" className="bg-slate-400">
           {({ open }) => (
             <>

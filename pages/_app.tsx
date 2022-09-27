@@ -4,7 +4,6 @@ import Layout from '../components/common/layout'
 import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
 
-
 function MyApp({ Component, pageProps:{session, ...pageProps} }: AppProps) {
 
   let title:String = pageProps.frontmatter ? 
