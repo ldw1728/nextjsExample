@@ -136,4 +136,11 @@ post
   transform: scale(1.1);
 }
 
+.LoginPopup{
+  position: absolute;
+  width:500px;
+  height: 300px;
+  color: blueviolet;
+}
+
 
