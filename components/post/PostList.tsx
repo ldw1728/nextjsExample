@@ -2,8 +2,10 @@ import Link from "next/link";
 import dateFormat from 'date-and-time';
 import Pagination from '../common/Pagination'
 
+
 //postListComponent
 export default function postList({posts, pageIdx, queryArr}:any){
+
     const {pagePosts, totPage} = setPostsForPage(posts, pageIdx);
     const path:string = (queryArr !== undefined && queryArr.length > 1) ? `${queryArr[0]}/${queryArr[1]}` : '/posts';
     return (

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 
 export default function Pagination({totPage, pageIdx, path}:any){
-    console.log(totPage, pageIdx, path)
+    // console.log(totPage, pageIdx, path)
     const pageNumArr = setPageNum(totPage);
     return (
         <>

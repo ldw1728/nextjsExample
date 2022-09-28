@@ -44,9 +44,9 @@ export default function Posts(postProps: PostsProps){
 //build 시 한번 실행되며 dev에서는 계속 실행된다.
 export async function getStaticPaths(){
     const paths = await getAllCategoryPaths();
-    paths.map((e)=>{
-        console.log(e);
-    })
+    // paths.map((e)=>{
+    //     console.log(e);
+    // })
 
     return {
         paths,
