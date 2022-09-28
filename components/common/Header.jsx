@@ -21,33 +21,33 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function getSessionCheck(){
-  const {data: session} = useSession();
-
-  let userNavigation = [];
-  let user = {
-    name: '',
-    email: '',
-    imageUrl:'image/noUser.png'
-  };
-
-  if(session){
-    userNavigation =  [
-      { name: 'My Profile', href: '#' },
-      { name: 'Settings', href: '#' },
-      { name: 'Sign out', href: '#' },
-    ]
-  }
-  else{
-    userNavigation = [{ name: 'Sign in', href: `` }];
-  }
-
-  return {userNavigation, user};
-}
-
 export default function Example() {
   
   const [isLoginPopup, setIsLoginPopup] = useState(false);
+
+  const getSessionCheck = () => {
+    const {data: session} = useSession();
+  
+    let userNavigation = [];
+    let user = {
+      name: '',
+      email: '',
+      imageUrl:'image/noUser.png'
+    };
+  
+    if(session){
+      userNavigation =  [
+        { name: 'My Profile', href: '#' },
+        { name: 'Settings', href: '#' },
+        { name: 'Sign out', href: '#' },
+      ]
+    }
+    else{
+      userNavigation = [{ name: 'Sign in', href: `#` , onclick:()=>setIsLoginPopup(true)}];
+    }
+  
+    return {userNavigation, user};
+  }
 
   const {userNavigation, user} = getSessionCheck();
 
@@ -124,6 +124,7 @@ export default function Example() {
                                 {({ active }) => (
                                   <a
                                     href={item.href}
+                                    onClick={item.onclick}
                                     className={classNames(
                                       active ? 'bg-gray-100' : '',
                                       'block px-4 py-2 text-sm text-gray-700'
