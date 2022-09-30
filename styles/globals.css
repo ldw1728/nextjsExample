@@ -5,6 +5,8 @@
 html, body{
   height: 100%;
   width: 100%;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
 }
 
 main{
@@ -72,12 +74,12 @@ post
   margin-top: 3%;
   margin-right: 10%;
 }
-
-.giticon{
+ 
+.giticon{ 
   width: 50px;
-  height: 50px;
-  margin: 10px;
-  
+  height: 50px; 
+  margin: 10px; 
+   
 }
 
 .category{
@@ -89,9 +91,8 @@ post
   padding-top: 10px;
 }
 
-.m_cate div:hover {
-  padding-top: 10px;
-  padding-bottom: 10px;
+.s_cate div:hover {
+
   color: rgb(71 85 105);
   cursor: pointer;
 }
@@ -136,17 +137,6 @@ post
   transform: scale(1.1);
 }
 
-.loginPopupContainer{
-  position: absolute;
-  width:100%;
-  height:100%;
-  background-color: rgba(255, 255, 255, 0.55);
-  z-index: 10;
-  backdrop-filter: blur(5px);
-  animation: lpc_ani 0.8s;
-  
-}
-
 .popupContainer{
   position: absolute;
   width:100%;
@@ -154,7 +144,7 @@ post
   background-color: rgba(255, 255, 255, 0.55);
   z-index: 10;
   backdrop-filter: blur(5px);
-  animation: lpc_ani 0.8s;
+  animation: lpc_ani 0.5s;
   
 }
 
@@ -167,33 +157,21 @@ post
   }
 }
 
-.loginPopupLayer{
-  position: absolute;
-  width: 500px;
-  height: 300px;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
-  top: 35%;
-  background-color: rgb(255, 255, 255);
-  border-width: 1.5px;
-  border-style: solid;
-  border-radius: 10px;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-}
-
 .popupLayer{
   position: absolute;
-  width: 500px;
-  height: 300px;
+  min-width: 300px;
+  max-width: max-content;
+  min-height: 300px;
+  max-height: max-content;
   margin: 0 auto;
   left: 0;
   right: 0;
-  top: 35%;
+  top: 25%;
   background-color: rgb(255, 255, 255);
   border-width: 1.5px;
   border-style: solid;
   border-radius: 10px;
+  border-color: black;
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
