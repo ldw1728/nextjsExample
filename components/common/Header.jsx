@@ -3,8 +3,8 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link';
-import {useSession, signIn, signOut} from "next-auth/react"
-import LoginPopup from '../auth/LoginPopup';
+import {useSession, signOut} from "next-auth/react"
+import PopupLayer from '../popup/PopupLayer';
 import {useState} from "react"
 
 
@@ -21,58 +21,50 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-
-export default function Example() {
+export default function Example({headerProps}) {
   
-  const [isLoginPopup, setIsLoginPopup] = useState(false);
-
-  const openLoginPopup = () => { console.log('signin')
-    setIsLoginPopup(true);
-  }
-
-  const closeloginPopup = () => {
-    setIsLoginPopup(false);
-  }
-
-  const getSessionCheck = () => {
-    const {data: session} = useSession();
+  //팝업레이어관련 state
+  const [popupSetting, setPopupSetting] = 
+      useState({isPopup:false, cmd:'', closePopup:()=>{popupSetting.isPopup = false; setPopupSetting(popupSetting)}});
   
+  
+  // 팝업열기,  공통으로 PopupLayer component를 사용하며 cmd로 각 팝업의 종류를 결정함.
+  function showPopup(cmd){
+    setPopupSetting({isPopup:true, cmd, closePopup:popupSetting.closePopup});
+  }
+  
+   function  getSessionCheck() {
+    let {session, status} = headerProps;
+    
     let userNavigation = [];
     let user = {
       name: '',
       email: '',
-      imageUrl:'image/noUser.png'
+      image:'image/noUser.png'
     };
-  
-    if(session){
+
+    if(session && status === 'authenticated'){ //세션이 있으면서 인증됨 (로그인된 상태)
+
+      user = session.user;
+
       userNavigation =  [
-        { name: 'My Profile', href: '#' },
-        { name: 'Settings', href: '#' },
-        { name: 'Sign out', href: '#' },
+        { name: 'My Profile', href: '#' , onclick:()=>showPopup('profile')},
+        { name: 'Sign out', href: '#' , onclick:()=>signOut()},
       ]
     }
-    else{
-      userNavigation = [{ name: 'Sign in', href:'#', onclick:openLoginPopup}];
+    else{ //(비로그인)
+      userNavigation = [{ name: 'Sign in', href: `#` , onclick:()=>showPopup('signin')}];
     }
   
     return {userNavigation, user};
   }
-  
 
-  const {userNavigation, user} = getSessionCheck();
+  let {userNavigation, user} = getSessionCheck();
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
-        <LoginPopup show={isLoginPopup} setClose={closeloginPopup}/>
+        <PopupLayer popupSetting={popupSetting} />
         <Disclosure as="nav" className="bg-slate-400">
           {({ open }) => (
             <>
@@ -83,9 +75,8 @@ export default function Example() {
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => (
-                          <Link href={item.href}>
-                          <a
-                            key={item.name}
+                          <Link href={item.href} key={item.name}>
+                          <a                        
                             className={classNames(
                               item.current
                                 ? 'bg-gray-900 text-white'
@@ -115,7 +106,7 @@ export default function Example() {
                       <Menu as="div" className="relative ml-3">
                         <div>
                           <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">                      
-                            <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                            <img className="h-8 w-8 rounded-full" src={user.image} alt="" />
                           </Menu.Button>
                         </div>
                         <Transition
@@ -183,7 +174,7 @@ export default function Example() {
                 <div className="border-t border-gray-700 pt-4 pb-3">
                   <div className="flex items-center px-5">
                     <div className="flex-shrink-0">
-                      <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                      <img className="h-10 w-10 rounded-full" src={user.image} alt="" />
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium leading-none text-white">{user.name}</div>

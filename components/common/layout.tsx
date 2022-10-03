@@ -3,11 +3,13 @@ import Nav from './nav'
 import Head from './Head'
 import Header from './Header'
 import Footer from './Footer'
-import { Children } from 'react'
+import { useSession } from 'next-auth/react'
+import { NextComponentType, NextPageContext } from 'next'
+import React from 'react'
 
 
 type LayoutProps = {
-    children: JSX.Element,
+    children : JSX.Element,
     page:{
         title : String,
         url: String
@@ -15,14 +17,17 @@ type LayoutProps = {
 }
 
 export default function layout (layoutProps:LayoutProps) {
-    
-    return (<>
+
+    const sessionInfo = useSession();
+
+    const {data:session, status} = sessionInfo;
+
+return (<>
         <Head title={layoutProps.page.title}/>
         <div className={styles.container}>
-            <Header/>
-            
+            <Header headerProps={{session, status}}/>
             <main className='flex justify-center content-center pt-5 pb-5'> 
-                {layoutProps.children}
+               {layoutProps.children}
             </main> 
             <Footer style = {styles.footer}/>
         </div>

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 
 export default function Pagination({totPage, pageIdx, path}:any){
-    console.log(totPage, pageIdx, path)
+    // console.log(totPage, pageIdx, path)
     const pageNumArr = setPageNum(totPage);
     return (
         <>
@@ -12,7 +12,7 @@ export default function Pagination({totPage, pageIdx, path}:any){
                 let cn = (pageIdx == pageNum) ? 'pagebtn currpagebtn' : 'pagebtn';
                 return (
                     
-                    <Link href={`${path}/${pageNum}`}>
+                    <Link key={pageNum} href={`${path}/${pageNum}`}>
                         <span className={cn}>{pageNum} </span>      
                     </Link>
                 )

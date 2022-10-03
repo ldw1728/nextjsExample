@@ -1,26 +1,40 @@
 import Link from "next/link";
 import dateFormat from 'date-and-time';
 import Pagination from '../common/Pagination'
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+
 
 //postListComponent
 export default function postList({posts, pageIdx, queryArr}:any){
+    const {data:session} = useSession();
     const {pagePosts, totPage} = setPostsForPage(posts, pageIdx);
     const path:string = (queryArr !== undefined && queryArr.length > 1) ? `${queryArr[0]}/${queryArr[1]}` : '/posts';
+    
+    useEffect(()=>{
+
+    })
+    
     return (
         <>      
+            <div className="absolute border-2 bg-slate-200 border-slate-300 rounded-xl  
+                            w-15 text-center p-2 font-semibold drop-shadow-md hover:scale-110 
+                            hover:border-slate-400 duration-200 cursor-pointer hidden">write</div> 
+            
             <div className='grid postgrid grid-cols-1 grid-rows-6 '>
+            
             {
-                pagePosts.map((post: any) => {
+                pagePosts.map((post: any, idx:number) => {
                     const {slug, frontmatter} = post;
                     const {title, author, category, date, bannerImage, tag} = frontmatter;
 
-                    return <Link href = {`/posts/${category}/${tag}/post/${slug}`}>
-                                <div className='post rounded-3xl drop-shadow-md border-2 border-slate-300 hover:border-slate-400'>                              
-                                    <div className="">
-                                    <a className="truncate">{title}</a>  
-                                    <div >{author}</div>
+                    return <Link href = {`/posts/${category}/${tag}/post/${slug}`} key={slug + idx}> 
+                                <div key={slug + idx} className='post rounded-3xl drop-shadow-md border-2 border-slate-300 hover:border-slate-400'>                              
+                                    <div key={'intro'+idx} className="">
+                                        <a className="truncate">{title}</a>  
+                                        <div >{author}</div>
                                     </div>                                    
-                                    <div className='date'>{dateFormat.format(new Date(date), 'YYYY/MM/DD')}</div>                                                
+                                    <div  key={'date'+idx} className='date'>{dateFormat.format(new Date(date), 'YYYY/MM/DD')}</div>                                                
                                 </div>
                             </Link>
                 })
