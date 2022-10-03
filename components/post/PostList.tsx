@@ -1,25 +1,27 @@
 import Link from "next/link";
 import dateFormat from 'date-and-time';
 import Pagination from '../common/Pagination'
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
-
+import { getSession, useSession } from "next-auth/react";
 
 //postListComponent
 export default function postList({posts, pageIdx, queryArr}:any){
-    const {data:session} = useSession();
+    
+    const {data:session, status} = useSession();
+
     const {pagePosts, totPage} = setPostsForPage(posts, pageIdx);
     const path:string = (queryArr !== undefined && queryArr.length > 1) ? `${queryArr[0]}/${queryArr[1]}` : '/posts';
     
-    useEffect(()=>{
-
-    })
+    const postWriteBtn = session && session?.user?.email == 'zckxw@naver.com' ? 
+    <Link href='/posts/editor'>
+        <div className="absolute border-2 bg-slate-200 border-slate-300 text-sm
+        w-15 text-center p-1 font-semibold drop-shadow-md  
+        hover:border-slate-400 duration-200 cursor-pointer" >write</div>
+    </Link>
+        : ''
     
     return (
-        <>      
-            <div className="absolute border-2 bg-slate-200 border-slate-300 rounded-xl  
-                            w-15 text-center p-2 font-semibold drop-shadow-md hover:scale-110 
-                            hover:border-slate-400 duration-200 cursor-pointer hidden">write</div> 
+        <>    
+           {postWriteBtn  }
             
             <div className='grid postgrid grid-cols-1 grid-rows-6 '>
             
