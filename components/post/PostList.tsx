@@ -12,7 +12,7 @@ export default function postList({posts, pageIdx, queryArr}:any){
     const path:string = (queryArr !== undefined && queryArr.length > 1) ? `${queryArr[0]}/${queryArr[1]}` : '/posts';
     
     const postWriteBtn = session && session?.user?.email == 'zckxw@naver.com' ? 
-    <Link href='/posts/editor'>
+    <Link href='/posts/edit'>
         <div className="absolute border-2 bg-slate-200 border-slate-300 text-sm
         w-15 text-center p-1 font-semibold drop-shadow-md  
         hover:border-slate-400 duration-200 cursor-pointer" >write</div>

@@ -1,11 +1,11 @@
 
 
-export default function Editor(){
+export default function Edit(){
 
 
     return (
         <>
-        
+
         </>
     )
 }
