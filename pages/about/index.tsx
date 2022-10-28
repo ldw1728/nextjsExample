@@ -10,14 +10,3 @@ export default function about(){
         </div>
     )
 }
-
-
-export async function getServerSideProps({req, query}: any) {
-
-    
-    var result = chkSign({req});
-
-    console.log(result)
-    return result;
-       
-  }

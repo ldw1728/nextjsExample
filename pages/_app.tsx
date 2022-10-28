@@ -4,6 +4,7 @@ import Layout from '../components/common/layout'
 import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
 import { useEffect } from 'react';
+import { chkSign } from '../lib/AuthService';
 
 function MyApp({ Component, pageProps:{session, ...pageProps} }: AppProps) {
   let title:String = pageProps.frontmatter ? 
@@ -17,6 +18,15 @@ function MyApp({ Component, pageProps:{session, ...pageProps} }: AppProps) {
       </Layout>
     </SessionProvider>    
   )
+}
+
+export async function getServerSideProps(context: any) {
+
+  const {req,resolvedUrl} = context;
+  var result = await chkSign(req,resolvedUrl);
+console.log(resolvedUrl)
+  return result;
+     
 }
 
 export default MyApp

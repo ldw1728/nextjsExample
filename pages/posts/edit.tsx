@@ -20,22 +20,3 @@ export default function Edit( ){
         </>
     )
 }
-
-export async function getServerSideProps({req}: any) {
-    const session = await getSession({req});
-    console.log()
-    chkSign(session, req.url);    
-    if(!session){
-        return {
-            redirect: {
-            permanent: false,
-            destination: "/"
-          }
-        }
-    }
-
-    return {
-        props:{}
-    };
-       
-  }
