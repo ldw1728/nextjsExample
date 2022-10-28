@@ -1,6 +1,4 @@
-import Link from 'next/link'
 import { getAllPosts, getCategoryList, getAllCategoryPaths, getPost } from '../../lib/post';
-import dateFormat from 'date-and-time'
 import Category from '../../components/common/Caregory'
 import {useRouter}  from 'next/router'
 import PostList from '../../components/post/PostList'

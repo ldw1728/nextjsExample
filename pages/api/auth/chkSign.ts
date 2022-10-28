@@ -11,10 +11,14 @@ export default async function (
 ) {
 
     const session = await getSession({req});
+
+    let status = 403;
+    let jsonData = '';
     
-    if(session !== null){
-      res.status(200).send(session);
+    if(session){
+      status = 200;
+      jsonData = JSON.stringify(session);
     }
-    else
-      res.redirect('/');
+    
+    res.status(status).json(jsonData);
 }

@@ -1,5 +1,6 @@
 import { getSession } from "next-auth/react";
 import { AppProps } from "next/app";
+import { chkSign } from "../../lib/AuthService";
 
 export default function about(){
     
@@ -11,19 +12,12 @@ export default function about(){
 }
 
 
-export async function getServerSideProps({req}: any) {
-    const res = await fetch(`${process.env.HOST_URL}/api/auth/chkSign`, {
-        method: 'GET',
-        headers: {
-        'Content-Type': 'application/json',
-        cookie: req.headers.cookie!,
-        },
-    }).then((res)=> {
-        return res.json().then((data)=>{return data})
-    });
+export async function getServerSideProps({req, query}: any) {
+
     
-    return {
-        props:{res}
-    };
+    var result = chkSign({req});
+
+    console.log(result)
+    return result;
        
   }
